@@ -5,16 +5,18 @@ regression baseline, when the protected attribute (gender) is withheld from
 both methods at inference time?
 
 Dataset: Bias-in-Bios (De-Arteaga et al., 2019, ACM FAccT), loaded as
-`LabHC/bias_in_bios` from the Hugging Face Hub. See the module docstring at
-the bottom of this file / the package README for why this dataset was
-chosen.
+`LabHC/bias_in_bios` from the Hugging Face Hub. See the package README for
+why this dataset was chosen.
 
 Design
 ------
-1. Stratified-by-profession sample of N biographies from the test split.
-2. Split into a fit set (used as each method's "Knowledge": the Proxies
-   agent's correlation registry, the baseline's trained classifier) and a
-   held-out eval set. Gender is visible to both methods ONLY during fitting.
+1. Stratified-by-profession sample of N biographies from the test split,
+   repeated over several independent seeds (different sample + fit/eval
+   split each time) so results are reported as mean +/- 95% CI, not a
+   single lucky split.
+2. Each run splits into a fit set (the Proxies agent's correlation
+   registry; the baseline's trained classifier) and a held-out eval set.
+   Gender is visible to both methods ONLY during fitting.
 3. At inference, gender is withheld. Two text conditions are evaluated:
      - raw     : the biography as written (gendered pronouns intact)
      - scrubbed: the same biography with gendered pronouns/honorifics
@@ -26,8 +28,8 @@ Design
    precision/recall/F1 and a confusion matrix -- this tests whether the
    score tracks a genuine lexical proxy signal, not whether it reaches
    today's SOTA on this task.
-5. The top-20 terms in the Proxies agent's correlation registry are reported
-   as the interpretable artifact the baseline cannot produce.
+5. The top-20 terms in the Proxies agent's correlation registry (last seed)
+   are reported as the interpretable artifact the baseline cannot produce.
 
 Run: python -m neuro5p.examples.bias_in_bios_demo
 """
@@ -45,9 +47,9 @@ from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_
 from neuro5p.agents.proxies import ProxiesAgent
 from neuro5p.examples.baseline_logreg import LogRegBaseline
 
-N_SAMPLE = 1000
+N_SAMPLE = 3000
 FIT_FRACTION = 0.8
-SEED = 42
+SEEDS = [42, 43, 44, 45, 46]
 PROXY_THRESHOLD = 0.3
 VETO_THRESHOLD = 0.6
 
@@ -93,17 +95,25 @@ def evaluate(scores: np.ndarray, threshold: float, y_true: np.ndarray) -> dict:
     }
 
 
-def run() -> dict:
-    print("Loading Bias-in-Bios (LabHC/bias_in_bios, test split)...")
-    ds = load_dataset("LabHC/bias_in_bios", split="test")
+def summarize(per_seed: list[dict]) -> dict:
+    """Mean +/- 95% CI (normal approx over seeds) for each metric."""
+    out = {}
+    for metric in ("precision", "recall", "f1", "flag_rate"):
+        vals = np.array([r[metric] for r in per_seed])
+        mean = float(vals.mean())
+        ci = float(1.96 * vals.std(ddof=1) / np.sqrt(len(vals))) if len(vals) > 1 else 0.0
+        out[metric] = {"mean": mean, "ci95": ci, "values": vals.tolist()}
+    return out
 
-    sample_idx = stratified_sample(ds, N_SAMPLE, SEED)
+
+def run_one_seed(ds, seed: int) -> dict:
+    sample_idx = stratified_sample(ds, N_SAMPLE, seed)
     sample = ds.select(sample_idx)
     texts = sample["hard_text"]
     genders = np.array(sample["gender"])  # 0 / 1, ground truth, withheld at inference
 
     n_fit = int(N_SAMPLE * FIT_FRACTION)
-    rng = np.random.default_rng(SEED)
+    rng = np.random.default_rng(seed)
     perm = rng.permutation(N_SAMPLE)
     fit_idx, eval_idx = perm[:n_fit], perm[n_fit:]
 
@@ -113,8 +123,6 @@ def run() -> dict:
     eval_texts_scrubbed = [scrub_gender_terms(t) for t in eval_texts_raw]
     eval_genders = genders[eval_idx]
 
-    print(f"Fit set: {len(fit_texts)}  |  Eval set: {len(eval_texts_raw)}")
-
     proxies = ProxiesAgent(
         protected_attributes=["gender"],
         proxy_correlation_threshold=PROXY_THRESHOLD,
@@ -123,7 +131,7 @@ def run() -> dict:
 
     baseline = LogRegBaseline().fit(fit_texts, fit_genders.tolist())
 
-    results: dict = {"n_sample": N_SAMPLE, "n_fit": len(fit_texts), "n_eval": len(eval_texts_raw)}
+    seed_result: dict = {"seed": seed, "n_fit": len(fit_texts), "n_eval": len(eval_texts_raw)}
 
     for condition, eval_texts in [("raw", eval_texts_raw), ("scrubbed", eval_texts_scrubbed)]:
         proxies_scores = np.array(
@@ -134,17 +142,50 @@ def run() -> dict:
         proxies_flag_rate = float((proxies_scores >= PROXY_THRESHOLD).mean())
         baseline_threshold = match_rate_threshold(baseline_scores, proxies_flag_rate)
 
-        results[condition] = {
+        seed_result[condition] = {
             "proxies_agent": evaluate(proxies_scores, PROXY_THRESHOLD, eval_genders),
             "logreg_baseline_matched_rate": evaluate(
                 baseline_scores, baseline_threshold, eval_genders
             ),
         }
-        print(f"\n[{condition}] Proxies agent:  {results[condition]['proxies_agent']}")
-        print(f"[{condition}] LR baseline:     {results[condition]['logreg_baseline_matched_rate']}")
 
-    top20 = sorted(proxies._proxy_registry.items(), key=lambda kv: -abs(kv[1]))[:20]
+    seed_result["_proxy_registry"] = dict(proxies._proxy_registry)
+    return seed_result
+
+
+def run() -> dict:
+    print("Loading Bias-in-Bios (LabHC/bias_in_bios, test split)...")
+    ds = load_dataset("LabHC/bias_in_bios", split="test")
+
+    per_seed = []
+    for seed in SEEDS:
+        print(f"\n=== seed {seed} ===")
+        r = run_one_seed(ds, seed)
+        per_seed.append(r)
+        for condition in ("raw", "scrubbed"):
+            print(f"[{condition}] Proxies: {r[condition]['proxies_agent']}")
+            print(f"[{condition}] LR base: {r[condition]['logreg_baseline_matched_rate']}")
+
+    results: dict = {
+        "n_sample": N_SAMPLE,
+        "seeds": SEEDS,
+        "n_fit": per_seed[0]["n_fit"],
+        "n_eval": per_seed[0]["n_eval"],
+    }
+    for condition in ("raw", "scrubbed"):
+        results[condition] = {
+            "proxies_agent": summarize([r[condition]["proxies_agent"] for r in per_seed]),
+            "logreg_baseline_matched_rate": summarize(
+                [r[condition]["logreg_baseline_matched_rate"] for r in per_seed]
+            ),
+        }
+
+    last_registry = per_seed[-1]["_proxy_registry"]
+    top20 = sorted(last_registry.items(), key=lambda kv: -abs(kv[1]))[:20]
     results["top20_flagged_proxy_features"] = [{"term": t, "correlation": c} for t, c in top20]
+    results["per_seed"] = [
+        {k: v for k, v in r.items() if k != "_proxy_registry"} for r in per_seed
+    ]
 
     out_path = Path(__file__).parent / "results" / "bias_in_bios_v010.json"
     out_path.write_text(json.dumps(results, indent=2))

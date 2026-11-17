@@ -1,71 +1,501 @@
 {
-  "n_sample": 1000,
-  "n_fit": 800,
-  "n_eval": 200,
+  "n_sample": 3000,
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_fit": 2400,
+  "n_eval": 600,
   "raw": {
     "proxies_agent": {
-      "precision": 0.5838509316770186,
-      "recall": 0.9306930693069307,
-      "f1": 0.7175572519083969,
-      "flag_rate": 0.805,
-      "confusion_matrix": {
-        "tn": 32,
-        "fp": 67,
-        "fn": 7,
-        "tp": 94
+      "precision": {
+        "mean": 0.5590797944622043,
+        "ci95": 0.025314763176127644,
+        "values": [
+          0.5701754385964912,
+          0.5581896551724138,
+          0.581858407079646,
+          0.5098039215686274,
+          0.5753715498938429
+        ]
+      },
+      "recall": {
+        "mean": 0.9317187682897172,
+        "ci95": 0.007225833460854976,
+        "values": [
+          0.931899641577061,
+          0.9384057971014492,
+          0.926056338028169,
+          0.9212598425196851,
+          0.9409722222222222
+        ]
+      },
+      "f1": {
+        "mean": 0.6985271779245934,
+        "ci95": 0.021299109086780187,
+        "values": [
+          0.7074829931972789,
+          0.7,
+          0.7146739130434783,
+          0.6563814866760168,
+          0.7140974967061924
+        ]
+      },
+      "flag_rate": {
+        "mean": 0.7673333333333334,
+        "ci95": 0.010765141274812281,
+        "values": [
+          0.76,
+          0.7733333333333333,
+          0.7533333333333333,
+          0.765,
+          0.785
+        ]
       }
     },
     "logreg_baseline_matched_rate": {
-      "precision": 0.422360248447205,
-      "recall": 0.6732673267326733,
-      "f1": 0.5190839694656488,
-      "flag_rate": 0.805,
-      "confusion_matrix": {
-        "tn": 6,
-        "fp": 93,
-        "fn": 33,
-        "tp": 68
+      "precision": {
+        "mean": 0.40305580888925946,
+        "ci95": 0.016692114176516414,
+        "values": [
+          0.4100877192982456,
+          0.3922413793103448,
+          0.4092920353982301,
+          0.3769063180827887,
+          0.4267515923566879
+        ]
+      },
+      "recall": {
+        "mean": 0.6720197330976073,
+        "ci95": 0.01604236374566919,
+        "values": [
+          0.6702508960573477,
+          0.6594202898550725,
+          0.6514084507042254,
+          0.6811023622047244,
+          0.6979166666666666
+        ]
+      },
+      "f1": {
+        "mean": 0.5036741163344048,
+        "ci95": 0.015051797208674831,
+        "values": [
+          0.508843537414966,
+          0.4918918918918919,
+          0.5027173913043478,
+          0.485273492286115,
+          0.5296442687747036
+        ]
+      },
+      "flag_rate": {
+        "mean": 0.7673333333333334,
+        "ci95": 0.010765141274812281,
+        "values": [
+          0.76,
+          0.7733333333333333,
+          0.7533333333333333,
+          0.765,
+          0.785
+        ]
       }
     }
   },
   "scrubbed": {
     "proxies_agent": {
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "flag_rate": 0.0,
-      "confusion_matrix": {
-        "tn": 99,
-        "fp": 0,
-        "fn": 101,
-        "tp": 0
+      "precision": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "recall": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "f1": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "flag_rate": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
       }
     },
     "logreg_baseline_matched_rate": {
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "flag_rate": 0.0,
-      "confusion_matrix": {
-        "tn": 99,
-        "fp": 0,
-        "fn": 101,
-        "tp": 0
+      "precision": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "recall": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "f1": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "flag_rate": {
+        "mean": 0.0,
+        "ci95": 0.0,
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
       }
     }
   },
   "top20_flagged_proxy_features": [
     {
       "term": "she",
-      "correlation": 0.7124404673658519
-    },
-    {
-      "term": "his",
-      "correlation": -0.5577428990186172
+      "correlation": 0.7052716644808179
     },
     {
       "term": "her",
-      "correlation": 0.5490702736031872
+      "correlation": 0.5710303222062872
+    },
+    {
+      "term": "his",
+      "correlation": -0.5594843007822841
+    }
+  ],
+  "per_seed": [
+    {
+      "seed": 42,
+      "n_fit": 2400,
+      "n_eval": 600,
+      "raw": {
+        "proxies_agent": {
+          "precision": 0.5701754385964912,
+          "recall": 0.931899641577061,
+          "f1": 0.7074829931972789,
+          "flag_rate": 0.76,
+          "confusion_matrix": {
+            "tn": 125,
+            "fp": 196,
+            "fn": 19,
+            "tp": 260
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.4100877192982456,
+          "recall": 0.6702508960573477,
+          "f1": 0.508843537414966,
+          "flag_rate": 0.76,
+          "confusion_matrix": {
+            "tn": 52,
+            "fp": 269,
+            "fn": 92,
+            "tp": 187
+          }
+        }
+      },
+      "scrubbed": {
+        "proxies_agent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 321,
+            "fp": 0,
+            "fn": 279,
+            "tp": 0
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 321,
+            "fp": 0,
+            "fn": 279,
+            "tp": 0
+          }
+        }
+      }
+    },
+    {
+      "seed": 43,
+      "n_fit": 2400,
+      "n_eval": 600,
+      "raw": {
+        "proxies_agent": {
+          "precision": 0.5581896551724138,
+          "recall": 0.9384057971014492,
+          "f1": 0.7,
+          "flag_rate": 0.7733333333333333,
+          "confusion_matrix": {
+            "tn": 119,
+            "fp": 205,
+            "fn": 17,
+            "tp": 259
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.3922413793103448,
+          "recall": 0.6594202898550725,
+          "f1": 0.4918918918918919,
+          "flag_rate": 0.7733333333333333,
+          "confusion_matrix": {
+            "tn": 42,
+            "fp": 282,
+            "fn": 94,
+            "tp": 182
+          }
+        }
+      },
+      "scrubbed": {
+        "proxies_agent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 324,
+            "fp": 0,
+            "fn": 276,
+            "tp": 0
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 324,
+            "fp": 0,
+            "fn": 276,
+            "tp": 0
+          }
+        }
+      }
+    },
+    {
+      "seed": 44,
+      "n_fit": 2400,
+      "n_eval": 600,
+      "raw": {
+        "proxies_agent": {
+          "precision": 0.581858407079646,
+          "recall": 0.926056338028169,
+          "f1": 0.7146739130434783,
+          "flag_rate": 0.7533333333333333,
+          "confusion_matrix": {
+            "tn": 127,
+            "fp": 189,
+            "fn": 21,
+            "tp": 263
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.4092920353982301,
+          "recall": 0.6514084507042254,
+          "f1": 0.5027173913043478,
+          "flag_rate": 0.7533333333333333,
+          "confusion_matrix": {
+            "tn": 49,
+            "fp": 267,
+            "fn": 99,
+            "tp": 185
+          }
+        }
+      },
+      "scrubbed": {
+        "proxies_agent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 316,
+            "fp": 0,
+            "fn": 284,
+            "tp": 0
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 316,
+            "fp": 0,
+            "fn": 284,
+            "tp": 0
+          }
+        }
+      }
+    },
+    {
+      "seed": 45,
+      "n_fit": 2400,
+      "n_eval": 600,
+      "raw": {
+        "proxies_agent": {
+          "precision": 0.5098039215686274,
+          "recall": 0.9212598425196851,
+          "f1": 0.6563814866760168,
+          "flag_rate": 0.765,
+          "confusion_matrix": {
+            "tn": 121,
+            "fp": 225,
+            "fn": 20,
+            "tp": 234
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.3769063180827887,
+          "recall": 0.6811023622047244,
+          "f1": 0.485273492286115,
+          "flag_rate": 0.765,
+          "confusion_matrix": {
+            "tn": 60,
+            "fp": 286,
+            "fn": 81,
+            "tp": 173
+          }
+        }
+      },
+      "scrubbed": {
+        "proxies_agent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 346,
+            "fp": 0,
+            "fn": 254,
+            "tp": 0
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 346,
+            "fp": 0,
+            "fn": 254,
+            "tp": 0
+          }
+        }
+      }
+    },
+    {
+      "seed": 46,
+      "n_fit": 2400,
+      "n_eval": 600,
+      "raw": {
+        "proxies_agent": {
+          "precision": 0.5753715498938429,
+          "recall": 0.9409722222222222,
+          "f1": 0.7140974967061924,
+          "flag_rate": 0.785,
+          "confusion_matrix": {
+            "tn": 112,
+            "fp": 200,
+            "fn": 17,
+            "tp": 271
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.4267515923566879,
+          "recall": 0.6979166666666666,
+          "f1": 0.5296442687747036,
+          "flag_rate": 0.785,
+          "confusion_matrix": {
+            "tn": 42,
+            "fp": 270,
+            "fn": 87,
+            "tp": 201
+          }
+        }
+      },
+      "scrubbed": {
+        "proxies_agent": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 312,
+            "fp": 0,
+            "fn": 288,
+            "tp": 0
+          }
+        },
+        "logreg_baseline_matched_rate": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "flag_rate": 0.0,
+          "confusion_matrix": {
+            "tn": 312,
+            "fp": 0,
+            "fn": 288,
+            "tp": 0
+          }
+        }
+      }
     }
   ]
 }
