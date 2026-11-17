@@ -1,0 +1,71 @@
+{
+  "n_sample": 1000,
+  "n_fit": 800,
+  "n_eval": 200,
+  "raw": {
+    "proxies_agent": {
+      "precision": 0.5838509316770186,
+      "recall": 0.9306930693069307,
+      "f1": 0.7175572519083969,
+      "flag_rate": 0.805,
+      "confusion_matrix": {
+        "tn": 32,
+        "fp": 67,
+        "fn": 7,
+        "tp": 94
+      }
+    },
+    "logreg_baseline_matched_rate": {
+      "precision": 0.422360248447205,
+      "recall": 0.6732673267326733,
+      "f1": 0.5190839694656488,
+      "flag_rate": 0.805,
+      "confusion_matrix": {
+        "tn": 6,
+        "fp": 93,
+        "fn": 33,
+        "tp": 68
+      }
+    }
+  },
+  "scrubbed": {
+    "proxies_agent": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "flag_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 99,
+        "fp": 0,
+        "fn": 101,
+        "tp": 0
+      }
+    },
+    "logreg_baseline_matched_rate": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "flag_rate": 0.0,
+      "confusion_matrix": {
+        "tn": 99,
+        "fp": 0,
+        "fn": 101,
+        "tp": 0
+      }
+    }
+  },
+  "top20_flagged_proxy_features": [
+    {
+      "term": "she",
+      "correlation": 0.7124404673658519
+    },
+    {
+      "term": "his",
+      "correlation": -0.5577428990186172
+    },
+    {
+      "term": "her",
+      "correlation": 0.5490702736031872
+    }
+  ]
+}

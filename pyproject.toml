@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neuro5p"
+version = "0.1.0"
+description = "Continuous, multi-agent governance middleware for deployed LLMs (Neuro-5P)"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Charchit Dhawan", email = "charchitdhawan@gmail.com" }]
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "numpy",
+    "scikit-learn",
+]
+
+[project.optional-dependencies]
+examples = ["datasets", "pandas", "matplotlib"]
+dev = ["pytest>=7.0", "pytest-cov"]
+
+[project.urls]
+Homepage = "https://doi.org/10.5281/zenodo.21873506"
+
+[tool.hatch.build.targets.wheel]
+packages = ["neuro5p"]
